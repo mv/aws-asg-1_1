@@ -19,7 +19,7 @@ build {
       "echo === Connected via SSM at [${build.User}@${build.Host}:${build.Port}]",
       "echo ===",
       "echo ===",
-      "echo ===== Initial setup",
+      "echo === Initial setup",
     ]
   }
 
@@ -51,8 +51,7 @@ build {
   ##
   provisioner "shell" {
     inline = [
-      "echo ===== Install index.html [ec2-info]",
-      "cd /deploy/index-ec2-info/ && bash install-usr-share.sh",
+      "cd /deploy/index-ec2-info/ && sudo bash install-usr-share.sh",
     ]
   }
 
@@ -60,10 +59,6 @@ build {
   ## Breakpoint: check provisioning before commiting a new AMI
   ##
   /*****/
-  provisioner "breakpoint" {
-    disable = false
-    note    = "Breakpoint: check provisioning...."
-  }
   provisioner "breakpoint" {
     disable = false
     note    = "Breakpoint: check provisioning....1"

@@ -5,3 +5,5 @@
 echo "=== Package: extras"
 
 sudo dnf install -y htop wget tmux
+
+echo "==="

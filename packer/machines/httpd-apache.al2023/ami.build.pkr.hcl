@@ -19,7 +19,7 @@ build {
       "echo === Connected via SSM at [${build.User}@${build.Host}:${build.Port}]",
       "echo ===",
       "echo ===",
-      "echo ===== Initial setup",
+      "echo === Initial setup",
     ]
   }
 
@@ -51,8 +51,7 @@ build {
   ##
   provisioner "shell" {
     inline = [
-      "echo ===== Install index.html [ec2-info]",
-      "cd /deploy/index-ec2-info/ && bash install-var-www.sh",
+      "cd /deploy/index-ec2-info/ && sudo bash install-var-www.sh",
     ]
   }
 
