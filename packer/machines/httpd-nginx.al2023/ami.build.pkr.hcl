@@ -28,7 +28,7 @@ build {
   ##
   provisioner "shell" {
     scripts = [
-      "../../scripts/dir-deploy/as-ec2-user.sh",
+      "../../scripts/dir-deploy/by-ec2-user.sh",
       "../../scripts/httpd-nginx/dnf-install.sh",
       "../../scripts/install-extras/dnf-install.sh",
     ]
