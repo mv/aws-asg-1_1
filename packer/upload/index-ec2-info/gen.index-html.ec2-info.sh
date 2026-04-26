@@ -13,9 +13,10 @@ _ec2_metadata="http://169.254.169.254"
 
 _token=$(      curl -s -X PUT "${_ec2_metadata}/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-_instance_id=$(curl -sH "X-aws-ec2-metadata-token: ${_token}" ${_ec2_metadata}/latest/meta-data/instance-id)
-_local_ip=$(   curl -sH "X-aws-ec2-metadata-token: ${_token}" ${_ec2_metadata}/latest/meta-data/local-ipv4)
-_az=$(         curl -sH "X-aws-ec2-metadata-token: ${_token}" ${_ec2_metadata}/latest/meta-data/placement/availability-zone)
+  _instance_id=$(curl -sH "X-aws-ec2-metadata-token: ${_token}" ${_ec2_metadata}/latest/meta-data/instance-id)
+_instance_type=$(curl -sH "X-aws-ec2-metadata-token: ${_token}" ${_ec2_metadata}/latest/meta-data/instance-type)
+_local_ip=$(     curl -sH "X-aws-ec2-metadata-token: ${_token}" ${_ec2_metadata}/latest/meta-data/local-ipv4)
+_az=$(           curl -sH "X-aws-ec2-metadata-token: ${_token}" ${_ec2_metadata}/latest/meta-data/placement/availability-zone)
 
 
 ##
@@ -74,7 +75,8 @@ cat <<EOF > index.html
       margin: 0.5rem 0;
       display: flex;
       justify-content: space-between;
-      font-size: 0.95rem;
+#     font-size: 0.95rem;
+      font-size: 0.80rem;
     }
     .label {
       color: #94a3b8;
@@ -88,6 +90,7 @@ cat <<EOF > index.html
   <div class="card">
     <h1>EC2 Instance</h1>
     <div class="row"><span class="label">Instance ID</span><span class="value">${_instance_id}</span></div>
+    <div class="row"><span class="label">Instance type</span><span class="value">${_instance_type}</span></div>
     <div class="row"><span class="label">Hostname</span><span class="value">${_hostname}</span></div>
     <div class="row"><span class="label">Local IP</span><span class="value">${_local_ip}</span></div>
     <div class="row"><span class="label">AZ</span><span class="value">${_az}</span></div>
