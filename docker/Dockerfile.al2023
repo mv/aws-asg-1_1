@@ -1,0 +1,43 @@
+
+##
+## Stage 1: git clone
+##
+FROM alpine/git AS clone
+WORKDIR /git
+RUN git clone https://github.com/gdraheim/docker-systemctl-replacement.git ./systemctl-mock
+
+
+##
+## Stage 2: build
+FROM amazonlinux:2023
+
+
+# Mock
+COPY --from=clone /git/systemctl-mock/files/docker/systemctl3.py  /usr/local/bin/systemctl
+COPY --from=clone /git/systemctl-mock/files/docker/journalctl3.py /usr/local/bin/journalctl
+
+# https://github.com/aws/amazon-ec2-metadata-mock/releases/download/v1.13.0/ec2-metadata-mock-$(uname -s)-$(uname -m)
+# Default: uname: -s: linux|darwin,  -m:{arm,amd}{x64,}
+ARG _arch="amd64"
+ARG _system="linux"
+ARG _version="v1.13.0"
+
+RUN if [ "$(uname -a )" != "x86_64" ]; then _arch=$(uname -a); fi
+RUN echo "Architecture: [${arch}]"
+
+RUN if [ "$(uname -s )" == "Darwin" ]; then _system="darwin" ; fi
+RUN echo "System: [${system}]"
+
+RUN  curl  -Lo /usr/local/bin/ec2-metadata-mock \
+               https://github.com/aws/amazon-ec2-metadata-mock/releases/download/${_version}/ec2-metadata-mock-${_system}-${_arch}
+RUN  chmod 775 /usr/local/bin/*
+
+# Requirements: packer/testing
+RUN dnf install -y bash which sudo
+
+# Final
+ENV DOCKER=true
+WORKDIR /
+
+CMD        ["/usr/local/bin/ec2-metadata-mock"]
+ENTRYPOINT ["/bin/bash", "-c"]

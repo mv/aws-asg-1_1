@@ -11,6 +11,10 @@ _ec2_metadata="http://169.254.169.254"
 ## MacOS: use Mock
 [[ $(uname -s) == "Darwin" ]] && _ec2_metadata="http://localhost:1338"
 
+## Docker:testing
+[[ ${DOCKER} == "true" ]] && _ec2_metadata="http://localhost:1338"
+[[ -f /.dockerenv      ]] && _ec2_metadata="http://localhost:1338"
+
 _token=$(      curl -s -X PUT "${_ec2_metadata}/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
   _instance_id=$(curl -sH "X-aws-ec2-metadata-token: ${_token}" ${_ec2_metadata}/latest/meta-data/instance-id)

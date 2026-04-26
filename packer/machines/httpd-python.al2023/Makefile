@@ -67,7 +67,12 @@ install: ## - Install 'packer'
 build: ## - Packer: build
 	@echo
 	source ../../_variables.sh && \
-	packer init . && packer build .
+	packer init . && packer build -only=docker.alma10     . && \
+	printf "\n---\n--- Docker: Ok\n---\n\n" && \
+	packer init . && packer build -only=docker.al2023     . && \
+	printf "\n---\n--- Docker: Ok\n---\n\n" && \
+	packer init . && packer build -only=amazon-ebs.al2023 . && \
+	printf "\n---\n--- AMI:    Ok\n---\n\n"
 
 
 validate: ## - Packer: build

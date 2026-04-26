@@ -5,13 +5,17 @@
 ## Build + provisioning
 ##
 build {
-  sources = [ "source.amazon-ebs.al2023" ]
+  sources = [
+    "source.docker.alma10",
+    "source.docker.al2023",
+    "source.amazon-ebs.al2023"
+  ]
 
   provisioner "shell" {
     inline = [
       "echo ===",
       "echo ===",
-      "echo === Connected via SSM at [${build.User}@${build.Host}:${build.Port}]",
+  #   "echo === Connected via SSM at [${build.User}@${build.Host}:${build.Port}]",
       "echo ===",
       "echo ===",
       "echo === Upload files: /tmp/www/",
