@@ -26,3 +26,18 @@ output  "default_vpc_default_security_group_id"  { value = module.vpc.default_vp
 #utput  "database_subnet_group"                  { value = module.vpc.database_subnet_group                 }
 #utput  "database_subnets"                       { value = module.vpc.database_subnets                      }
 #utput  "database_subnets_cidr_blocks"           { value = module.vpc.database_subnets_cidr_blocks          }
+
+output "azs_subnets" {
+  value = {
+    for i, az in module.vpc.azs:
+      az => {
+        "public"   = module.vpc.public_subnets[i]
+        "private"  = module.vpc.private_subnets[i]
+#       "database" = module.vpc.database_subnets[i]
+      }
+  }
+}
+
+output "azs_private"  { value = { for i, az in module.vpc.azs: az => module.vpc.private_subnets[i]   } }
+output "azs_public"   { value = { for i, az in module.vpc.azs: az => module.vpc.public_subnets[i]    } }
+#utput "azs_database" { value = { for i, az in module.vpc.azs: az => module.vpc.databases_subnets[i] } }
